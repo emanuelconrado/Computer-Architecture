@@ -5,6 +5,7 @@
         "cmath": "cpp",
         "bitset": "cpp",
         "iosfwd": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "string": "cpp"
     }
 }

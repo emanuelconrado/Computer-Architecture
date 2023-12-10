@@ -9,9 +9,11 @@ class Conversor
 {
 public:
     int number;
+    string auxtext;
     string binary;
     Conversor();
     ~Conversor();
     void ConversorToBin(string text, int type);
     void Conver(int type);
+    void ConversorToOctal(string text);
 };

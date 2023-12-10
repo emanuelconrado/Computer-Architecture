@@ -10,9 +10,13 @@ Conversor::~Conversor(){
 
 void Conversor::ConversorToBin(string text, int type){
 
+    auxtext = text;
+
     if(type == 1){
         number = stoi(text);
         binary = bitset<16>(number).to_string();
+        binary = binary.substr(binary.find('1'));
+        
     }
 
     if(type == 2){
@@ -78,6 +82,24 @@ void Conversor::ConversorToBin(string text, int type){
         }
         binary = bin;
     }
+
+    if(type == 3){
+        binary = text;
+        if(binary.length()%4 != 0){
+            binary = '0' + binary;
+        }
+    }
+
+    if(type == 4){
+        int aux = text.length() - 1;
+        int auxbinary = 0;
+        for(int i = aux; i >= 0; i--){
+            number =  text[i] - '0';
+            binary = bitset<3>(number).to_string() + binary;
+
+        }
+        cout << binary << endl;
+    }
 }
 
 void Conversor::Conver(int type){
@@ -99,17 +121,17 @@ void Conversor::Conver(int type){
     //Hexadecimal
 
     if(type == 2){
-        int j = 0;
+        int j = 3;
         int auxbinary = 0;
         int count = 0;
         string result;
-        stringstream stream;
         string auxresult;
 
-        //if number
+        while(binary.length() % 4 != 0){
+            binary = '0' + binary;
+        }
 
         for(int i = 0; i < binary.length()/4; i++){
-            j = j + 3;
             string auxbin;
             for(int k = 0; k < 4; k++){
                 if(count == 0){
@@ -119,11 +141,13 @@ void Conversor::Conver(int type){
                     auxbin = binary[j - k] + auxbin;
                 }
             }
+            j = j + 4;
 
             auxbinary = stoi(auxbin);
 
             if(auxbinary < 1010){
                 int intauxresult = 0;
+                stringstream stream;
                 int l = 3;
                 for(int a = 0; a < 4; a++){
                     if(auxbin[l] == '1'){
@@ -132,17 +156,85 @@ void Conversor::Conver(int type){
                     l--;
                 }
                 stream << intauxresult;
-            }
-
                 stream >> auxresult;
-                result = result + auxresult;
 
+            }else{
+                switch (auxbinary)
+                {
+                case 1010:
+                    auxresult = 'A';
+                    break;
+                case 1011:
+                    auxresult = 'B';
+                    break;
+                case 1100:
+                    auxresult = 'C';
+                    break;
+                case 1101:
+                    auxresult = 'D';
+                    break;
+                case 1110:
+                    auxresult = 'E';
+                    break;
+                default:
+                    auxresult = 'F';
+                    break;
+                }
+            }
+                result = result + auxresult;
         }
 
-        //if char
-
+            cout << result << endl;
 
     }
 
+    if(type == 3){
+        string auxbinary;
+        auxbinary = binary.substr(binary.find('1'));
+        cout << auxbinary << endl;
+    }
 
+    if(type == 4){
+        ConversorToOctal(auxtext);
+    }
+}
+
+void Conversor::ConversorToOctal(string text){
+    int j = 0;
+    int count = 0;
+    string result;
+    string auxresult;
+    while (binary.length() % 3 != 0)
+    {
+        binary = '0' + binary;
+    }
+
+    for(int i = 0; i < binary.length()/3; i++){
+        string auxbinary;
+        for(int k = 0; k < 3; k++){
+            if(count == 0){
+                auxbinary = binary[j + k];
+                count++;
+            }else{
+                auxbinary = auxbinary + binary[j + k];
+            }
+        }
+
+    j = j + 3;
+    int intauxresult = 0;
+    stringstream stream;
+    int l = 2;
+        for(int a = 0; a < 3; a++){
+            if(auxbinary[l] == '1'){
+                intauxresult = (pow(2,a)*1) + intauxresult;
+            }
+            l--;
+        }
+        stream << intauxresult;
+        stream >> auxresult;
+
+        result = result + auxresult;
+    }
+
+    cout << result << endl;
 }
